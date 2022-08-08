@@ -1,19 +1,26 @@
 package academy.devdojo.springboot.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+import java.util.Objects;
+
+@Data
+@AllArgsConstructor
 public class Anime {
+    private Long id;
     private String name;
 
-    public Anime() {
-    }
-    public Anime(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Anime anime = (Anime) o;
+        return Objects.equals(id, anime.id);
     }
 
-    public void setName(String name) {
-        this.name = name;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
