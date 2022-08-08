@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -25,14 +24,17 @@ public class AnimeController {
 
     @GetMapping
     public ResponseEntity<List<Anime>> list() {
-        log.info(dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
         return ResponseEntity.ok(animeService.listAll());
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<Anime> findByID(@PathVariable long id) {
-        log.info(dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
         return ResponseEntity.ok(animeService.findByIdOrThrowBadRequestException(id));
+    }
+
+    @GetMapping(value = "/find")
+    public ResponseEntity<List<Anime>> findByName(@RequestParam String name) {
+        return ResponseEntity.ok(animeService.findByName(name));
     }
 
     @PostMapping
