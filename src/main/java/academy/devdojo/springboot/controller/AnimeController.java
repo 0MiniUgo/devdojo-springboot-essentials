@@ -1,8 +1,11 @@
 package academy.devdojo.springboot.controller;
 
 import academy.devdojo.springboot.domain.Anime;
+import academy.devdojo.springboot.requests.AnimePostRequestBody;
+import academy.devdojo.springboot.requests.AnimePutRequestBody;
 import academy.devdojo.springboot.service.AnimeService;
 import academy.devdojo.springboot.util.DateUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,15 +17,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/animes")
 @Log4j2
+@RequiredArgsConstructor
 public class AnimeController {
 
     private final DateUtil dateUtil;
     private final AnimeService animeService;
-
-    public AnimeController(DateUtil dateUtil, AnimeService animeService) {
-        this.dateUtil = dateUtil;
-        this.animeService = animeService;
-    }
 
     @GetMapping
     public ResponseEntity<List<Anime>> list() {
@@ -33,13 +32,13 @@ public class AnimeController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<Anime> findByID(@PathVariable long id) {
         log.info(dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
-        return ResponseEntity.ok(animeService.findById(id));
+        return ResponseEntity.ok(animeService.findByIdOrThrowBadRequestException(id));
     }
 
     @PostMapping
-    public ResponseEntity<Anime> save(@RequestBody Anime anime){
+    public ResponseEntity<Anime> save(@RequestBody AnimePostRequestBody animePostRequestBody){
 
-        return new ResponseEntity<>(animeService.save(anime), HttpStatus.CREATED);
+        return new ResponseEntity<>(animeService.save(animePostRequestBody), HttpStatus.CREATED);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -49,9 +48,9 @@ public class AnimeController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> replace(@RequestBody Anime anime) {
+    public ResponseEntity<Void> replace(@RequestBody AnimePutRequestBody animePutRequestBody) {
 
-        animeService.replace(anime);
+        animeService.replace(animePutRequestBody);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
