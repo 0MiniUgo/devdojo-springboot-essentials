@@ -31,7 +31,7 @@ public class AnimeController {
     }
 
     @GetMapping(value = "/all")
-    public ResponseEntity<List<Anime>> listAll() {
+    public ResponseEntity<List<Anime>> findAll() {
         return ResponseEntity.ok(animeService.findALl());
     }
 
