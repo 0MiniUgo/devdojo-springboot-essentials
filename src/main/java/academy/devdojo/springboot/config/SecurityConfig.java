@@ -28,6 +28,8 @@ public class SecurityConfig {
                         .anyRequest()
                         .authenticated()
                 )
+                .formLogin()
+                .and()
                 .httpBasic(Customizer.withDefaults());
         return http.build();
     }
