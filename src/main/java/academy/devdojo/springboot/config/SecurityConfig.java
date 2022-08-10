@@ -1,5 +1,7 @@
 package academy.devdojo.springboot.config;
 
+import academy.devdojo.springboot.service.DevDojoUserDetailsService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.Customizer;
@@ -16,7 +18,10 @@ import org.springframework.security.web.SecurityFilterChain;
 @Log4j2
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final DevDojoUserDetailsService devDojoUserDetailsService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -33,6 +38,7 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults());
         return http.build();
     }
+
     @Bean
     public InMemoryUserDetailsManager userDetailsService() {
         PasswordEncoder encoder
@@ -40,12 +46,12 @@ public class SecurityConfig {
         log.info("Password encoded: {}", encoder.encode("Test"));
 
         UserDetails admin = User.builder()
-                .username("Ugo")
+                .username("Ugo2")
                 .password(encoder.encode("SenhaForte"))
                 .roles("USER", "ADMIN")
                 .build();
         UserDetails user = User.builder()
-                .username("Rick")
+                .username("Rick2")
                 .password(encoder.encode("SenhaFraca"))
                 .roles("USER")
                 .build();
