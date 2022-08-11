@@ -4,6 +4,7 @@ import academy.devdojo.springboot.service.DevDojoUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -40,10 +41,10 @@ public class SecurityConfig {
     }
 
     @Bean
-    public InMemoryUserDetailsManager userDetailsService() {
+    public InMemoryUserDetailsManager inMemoryUserDetailsManager() {
         PasswordEncoder encoder
                 = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        log.info("Password encoded: {}", encoder.encode("Test"));
+        log.info("Password encoded: {}", encoder.encode("Senha"));
 
         UserDetails admin = User.builder()
                 .username("Ugo2")
@@ -57,5 +58,17 @@ public class SecurityConfig {
                 .build();
 
         return new InMemoryUserDetailsManager(admin, user);
+    }
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider(){
+        PasswordEncoder encoder
+                = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(devDojoUserDetailsService);
+        authProvider.setPasswordEncoder(encoder);
+
+        return authProvider;
     }
 }
