@@ -19,3 +19,17 @@ logging:
     org:
       hibernate:
         SQL: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info, health, metrics
+  info:
+    env:
+      enabled: true
+
+info:
+  app: Spring Boot Essentials By DevDojo
+  website: https://github.com/0MiniUgo
+  github: https://github.com/0MiniUgo/devdojo-springboot-essentials

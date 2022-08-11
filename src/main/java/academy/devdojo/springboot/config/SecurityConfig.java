@@ -33,6 +33,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authz) -> authz
                         .antMatchers("/animes/admin/**").hasRole("ADMIN")
                         .antMatchers("/animes/**").hasRole("USER")
+                        .antMatchers("/actuator/**").permitAll()
                         .anyRequest()
                         .authenticated()
                 )
